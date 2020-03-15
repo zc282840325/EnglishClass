@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 小学英语在线教育系统</title>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("小学英语在线教育系统", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+
+                    <li>@Html.ActionLink("主页", "Index", "Home")</li>
+                    @if (Request.Cookies["UID"] == null)
+                    {
+                        <li>@Html.ActionLink("学习任务", "About", "Home")</li>
+                        <li>@Html.ActionLink("线上答疑", "Contact", "Home")</li>
+                        <li>@Html.ActionLink("学习报告", "Contact", "Home")</li>
+                        <li>@Html.ActionLink("登录", "Index", "Login")</li>
+                        <li>@Html.ActionLink("注册", "Register", "Login")</li>
+                    }
+                    else
+                    {
+                        //学生
+                        if (Request.Cookies["State"].Value == "0")
+                        {
+                            <li>@Html.ActionLink("学习任务", "About", "Home")</li>
+                            <li>@Html.ActionLink("线上答疑", "Contact", "Home")</li>
+                            <li>@Html.ActionLink("学习报告", "Contact", "Home")</li>
+
+
+                        }
+                        //老师
+                        else
+                        {
+                            <li>@Html.ActionLink("视频管理", "Index", "Video")</li>
+                            <li>@Html.ActionLink("题目管理", "Index", "Library")</li>
+                            <li>@Html.ActionLink("在线互动", "Contact", "Home")</li>
+
+                                }
+                        <li><a href="#">欢迎 @Request.Cookies["UserName"].Value 登录系统</a></li>
+                        <li>@Html.ActionLink("退出", "SignOut", "Login")</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content" style="margin-top:5px;">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year -小学英语在线教育系统</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

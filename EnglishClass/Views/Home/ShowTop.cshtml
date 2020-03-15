@@ -1,0 +1,32 @@
+﻿@using EnglishClass.Models;
+
+<style type="text/css">
+    h4 {
+        display: inline;
+        margin: 5px 5px;
+    }
+
+    #top label {
+        font-size: 22px;
+        color: green;
+    }
+
+    .a {
+        color: gray;
+        font-size: 22px;
+        margin: 5px;
+    }
+</style>
+<h4>制定课程：</h4><label id="old_nums">@ViewData["old_nums"]</label>
+<h4>制定天数：</h4><label id="old_days">@ViewData["old_days"]</label><span class="a">|</span>
+<h4>完成课程：</h4><label id="now_nums">@ViewData["now_nums"]</label>
+<h4>完成天数：</h4><label id="now_days">@ViewData["now_days"]</label> <span class="a">|</span>
+<h4>剩余课程：</h4><label id="future_nums">@ViewData["future_nums"]</label>
+<h4>预计天数：</h4><label id="future_days">@ViewData["future_days"]</label>
+  &nbsp;
+@if (@ViewData["old_nums"].ToString() == "0")
+{
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">制定学习计划</button>
+}
+
+

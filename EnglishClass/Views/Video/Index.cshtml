@@ -1,0 +1,80 @@
+﻿@model IEnumerable<EnglishClass.Models.tb_Video>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>我的视频</h2>
+<style type="text/css">
+    .table {
+    table-layout: fixed;  
+    width: 98%;
+    border:0px; 
+    margin: 0px; 
+    }
+        .table tr td {
+            text-overflow: ellipsis; /* for IE */
+            -moz-text-overflow: ellipsis; /* for Firefox,mozilla */
+            overflow: hidden;
+            white-space: nowrap;
+      
+            text-align: left
+        }  
+
+</style>
+<p>
+    @Html.ActionLink("添加视频", "Create")
+</p>
+<table class="table" style="border:0px">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.VName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Remake)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vimage)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tb_User.User_Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.VName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreateTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Remake)
+        </td>
+        <td>
+            <img src="@item.Vimage" width="50" height="50"/>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tb_User.User_Name)
+        </td>
+        <td>
+            @Html.ActionLink("编辑", "Edit", new { id=item.VID }) |
+            @Html.ActionLink("详情", "Details", new { id=item.VID }) |
+            @Html.ActionLink("删除", "Delete", new { id=item.VID })
+        </td>
+    </tr>
+}
+
+</table>

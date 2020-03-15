@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "About";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using EnglishClass.Models;
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        InitData();
+
+        $("#nums").val($("#old_nums").html());
+        $("#days").val($("#old_days").html());
+
+        $("#btn_add").click(function () {
+            var nums = $("#nums").val();
+            var days = $("#days").val();
+            var r = /^[1-9][0-9]+$/gi;
+            if (nums == "" || $.trim(nums).length == 0) {
+                alert("课程数不能为空！");
+                return;
+            }
+            if (days == "" || $.trim(days).length == 0) {
+                alert("天数不能为空！");
+                return;
+            }
+
+            if (isNaN(nums)) {
+                alert("课程数不是数字");
+                return;
+            }
+            if (isNaN(days)) {
+                alert("天数不是数字");
+                return;
+            }
+            //更新数据
+            $.ajax({
+                type: "Post",
+                url: "/Home/AddorUpdatePlant",
+                data: { 'nums': nums, 'days': days },
+                dataType: "json",
+                success: function (data) {
+                    if (data.result == "1") {
+                        $('#myModal').modal('hide');
+                        InitData();
+                    }
+                    else {
+                        alert(data.Msg);
+                    }
+
+                },
+                error: function (e) {
+                    alert(e.responseText);
+                }
+            });
+
+        });
+    });
+
+
+    function InitData() {
+        $.ajax({
+            type: "Get",
+            url: "/Home/ShowTop",
+            success: function (data) {
+                $("#top").html(data);
+            }
+        });
+    }
+</script>
+<style type="text/css">
+    h4 {
+        display: inline;
+        margin: 5px 5px;
+    }
+
+    #top label {
+        font-size: 22px;
+        color: green;
+    }
+
+    .a {
+        color: gray;
+        font-size: 22px;
+        margin: 5px;
+    }
+</style>
+<script type="text/javascript">
+</script>
+
+<h3>学习任务</h3>
+<hr />
+<div id="top">
+
+</div>
+
+
+<h3>视频资源</h3>
+<div style="clear:both;">
+    @Html.Action("ShowList", "Home")
+</div>
+
+<hr/>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">制定学习计划</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">制定课程数</label>
+                    <input type="text" class="form-control" id="nums" placeholder="请输入课程数">
+                </div>
+                <div class="form-group">
+                    <label for="name">制定完成天数</label>
+                    <input type="text" class="form-control" id="days" placeholder="请输入课程数">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="btn_add">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>

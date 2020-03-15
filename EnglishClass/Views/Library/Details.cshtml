@@ -1,0 +1,75 @@
+﻿@model EnglishClass.Models.tb_Library
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tb_Library</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.State)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Question)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Question)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Answer1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Answer1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Answer2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Answer2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Answer3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Answer3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TAnswer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TAnswer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tb_Video.VName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tb_Video.VName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Lid }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

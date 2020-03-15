@@ -1,0 +1,142 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>注册</title>
+    <script>
+        addEventListener("load", function () { setTimeout(hideURLbar, 0); }, false); function hideURLbar() { window.scrollTo(0, 1); }
+    </script>
+    <link href="~/Content/Login.css" rel="stylesheet" type='text/css' media="all">
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet">
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btn_login").click(function () {
+                //非空验证
+                var name = $("input[name='name']").val();
+                var password = $("input[name='password']").val();
+                var password1 = $("input[name='password1']").val();
+                var tel = $("input[name='tel']").val();
+                var select = $('#select option:selected').val();
+                if (name == "" || $.trim(name).length == 0) {
+                    alert("用户名不能为空！");
+                    return;
+                }
+                if (password == "" || $.trim(password).length == 0) {
+                    alert("密码不能为空！");
+                    return;
+                }
+                if (password1 == "" || $.trim(password1).length == 0) {
+                    alert("确认密码不能为空！");
+                    return;
+                }
+                if (tel == "" || $.trim(tel).length == 0) {
+                    alert("手机号不能为空！");
+                    return;
+                }
+                if (select == "" || $.trim(select).length == 0) {
+                    alert("请选择身份！");
+                    return;
+                }
+                if (password != password1) {
+                    alert("两次输入的密码不一致！");
+                    return;
+                }
+                //提交数据库
+                //1.验证数据库是否存在同名的用户名
+                $.ajax({
+                    type: "Post",
+                    url: "/Login/CheckName",
+                    data: { 'name': name, 'row': select },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.result=="1") {
+                            alert("用户名" + name + "已存在");
+                        }
+                        else {
+                            //2.添加数据
+                            $.ajax({
+                                type: "Post",
+                                url: "/Login/Register",
+                                data: { 'name': name, 'password': password, 'tel': tel, 'select': select },
+                                dataType: "json",
+                                success: function (data) {
+                                    alert(data.result);
+                                    if (data.result) {
+                                        alert("注册成功!");
+                                        window.location.href = "\Index";
+                                    }
+                                    else {
+                                        alert(data.Msg);
+                                    }
+                                },
+                                error: function (e) {
+                                    alert(e);
+                                }
+                            });
+                        }
+                    },
+                    error: function (e) {
+                        alert(e);
+                    }
+                });
+
+            });
+
+            $("#back").click(function () {
+                window.location.href = "/Login/Index";
+            });
+        })
+
+    </script>
+</head>
+<body>
+    <div class="mid-class">
+        <div class="art-right-w3ls">
+            <h2>用户注册</h2>
+            <form action="#" method="post">
+                <div class="main">
+                    <div class="form-left-to-w3l">
+                        <input type="text" name="name" placeholder="用户名" required="">
+                    </div>
+                    <div class="form-left-to-w3l ">
+                        <input type="password" name="password" placeholder="密码" required="">
+                        <div class="clear"></div>
+                    </div>
+                    <div class="form-left-to-w3l ">
+                        <input type="password" name="password1" placeholder="确认密码" required="">
+                    </div>
+                    <div class="form-left-to-w3l">
+                        <input type="text" name="tel" placeholder="手机号" required="">
+                    </div>
+                    <div class="form-left-to-w3l">
+                        <div>
+                            <select id="select" name="select">
+                                <option value="">请选择身份</option>
+                                <option value="0">学生</option>
+                                <option value="1">老师</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="clear"></div>
+
+                <button type="button" id="btn_login"> 注册</button>
+                <button type="button" class="btn_login" id="back"> 返回</button>
+            </form>
+        </div>
+        <div class="art-left-w3ls">
+            <h1 class="header-w3ls">
+                小学英语在线教育系统
+            </h1>
+        </div>
+    </div>
+</body>
+</html>

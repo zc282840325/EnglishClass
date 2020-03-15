@@ -1,0 +1,201 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>登录</title>
+
+    <script>
+        addEventListener("load", function () { setTimeout(hideURLbar, 0); }, false); function hideURLbar() { window.scrollTo(0, 1); }
+    </script>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+    <link href="~/Content/Login.css" rel="stylesheet" type='text/css' media="all">
+
+    <script type="text/javascript">
+        $(function () {
+            $("#myAlert").hide();
+
+            $.ajax({
+                 type: "get",
+                 url: "/Login/CheckedLogin",
+                 dataType: "json",
+                  async: false,
+                  success: function (data) {
+                    if (data.result == '1') {
+                        SetAlert('alert alert-warning', '警告！', '请您先登陆系统！。');
+                    }
+                }, error: function (e) {
+                    alert(e);
+                }
+            });
+
+            $("#btn_login").click(function () {
+                //非空验证
+                var name = $("input[name='name']").val();
+                var password = $("input[name='password']").val();
+                var select = $("input[type='radio']:checked").val();
+                var checkbox = $("input[type='checkbox']").is(':checked');
+                if (name == "" || $.trim(name).length == 0) {
+                    SetAlert('alert alert-warning', '警告！', '用户名不能为空。');
+
+                    return;
+                }
+                if (password == "" || $.trim(password).length == 0) {
+                    SetAlert('alert alert-warning', '警告！', '密码不能为空。');
+                    return;
+                }
+                $.ajax({
+                    type: "Post",
+                    url: "/Login/Login",
+                    data: { 'name': name, 'password': password, 'select': select, 'checkbox': checkbox },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.result == '1') {
+                            SetAlert('alert alert-success', '成功！', '登录成功。');
+                            setInterval(function () {
+                                window.location.href = "/Home/Index";
+                            }, 1500);
+                        }
+                        else {
+                            SetAlert('alert alert-warning', '警告！', data.Msg);
+                        }
+                    },
+                    error: function (e) {
+                        alert(e);
+                    }
+                });
+            });
+        });
+
+        function SetAlert(c, s, m) {
+            $("#myAlert").removeClass();
+            $("#myAlert").addClass(c);
+            $("#state").html(s);
+            $("#message").html(m);
+            $("#myAlert").slideDown();
+            setInterval(function () {
+                $("#myAlert").slideUp();
+            }, 1500);
+        }
+
+        function getCookie(cookie_name) {
+            var allcookies = document.cookie;
+            //索引长度，开始索引的位置
+            var cookie_pos = allcookies.indexOf(cookie_name);
+
+            // 如果找到了索引，就代表cookie存在,否则不存在
+            if (cookie_pos != -1) {
+                // 把cookie_pos放在值的开始，只要给值加1即可
+                //计算取cookie值得开始索引，加的1为“=”
+                cookie_pos = cookie_pos + cookie_name.length + 1;
+                //计算取cookie值得结束索引
+                var cookie_end = allcookies.indexOf(";", cookie_pos);
+
+                if (cookie_end == -1) {
+                    cookie_end = allcookies.length;
+
+                }
+                //得到想要的cookie的值
+                var value = unescape(allcookies.substring(cookie_pos, cookie_end));
+            }
+            return value;
+        }
+
+        //删除指定cookie的值
+        function removeCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            var cookieStr = "";
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i].trim();
+                if (c.indexOf(name) == 0) {
+                    document.cookie = c + ';expires=' + new Date(0).toUTCString()
+                } else {
+                    cookieStr += c;
+                    cookieStr += ";";
+                }
+                document.cookie = cookieStr;
+
+            }
+
+        }
+
+    </script>
+
+    <style type="text/css">
+        #myAlert {
+            width: 400px;
+            margin: 0 auto;
+            position: absolute;
+            top: 3%;
+            left: 50%;
+            transform: translate(-3%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="myAlert">
+        <strong id="state"></strong><span id="message"></span>
+    </div>
+   
+    <div class="mid-class" >
+
+        <div class="art-right-w3ls">
+            <h2>用户登录</h2>
+            <form action="#" method="post">
+                <div class="main">
+                    <div class="form-left-to-w3l">
+                        <input type="text" name="name" placeholder="用户名" required="">
+                    </div>
+                    <div class="form-left-to-w3l ">
+                        <input type="password" name="password" placeholder="密码" required="">
+                        <div class="clear"></div>
+                    </div>
+                    <div class="form-left-to-w3l">
+                        <div style="height:50px;margin:0 auto;line-height:50px;">
+                            <input type="radio" name="state" checked="checked" value="0" />学生
+                            <input type="radio" name="state" value="1" />老师
+                        </div>
+                    </div>
+                </div>
+                <div class="left-side-forget">
+                    <input type="checkbox" class="checked" id="check">
+                    <span class="remenber-me">记住我(30天) </span>
+                </div>
+                <div class="right-side-forget">
+                    <a href="#" class="for">忘记密码?</a>
+                </div>
+                <div class="clear"></div>
+
+                <button type="button" id="btn_login">登录</button>
+            </form>
+            <div class="w3layouts_more-buttn">
+                <h3>
+                    你是不是没有账号?
+                    @Html.ActionLink("注册", "Register", "Login")
+                </h3>
+            </div>
+
+        </div>
+        <div class="art-left-w3ls">
+            <h1 class="header-w3ls">
+                小学英语在线教育系统
+            </h1>
+        </div>
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+﻿@model EnglishClass.Models.tb_Video
+
+@{
+    ViewBag.Title = "修改视频";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+
+         function UploadImageOrVideo(formData) {
+        var msg = null;
+                 $.ajax({
+                        type: "Post",
+                        url: "/Video/ProcessRequest",
+                        data:formData,
+                        async: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data.error == "0") {
+                                msg= data.message;
+                            }
+                            else {
+                                alert(data.message);
+                            }
+                        }
+                 });
+        return msg;
+    }
+
+    function uploadImage() {
+          $("#file").click();
+    }
+
+    function uploadVideo() {
+          $("#file_video").click();
+    }
+
+    $(function () {
+
+        $(".upload input").on("change", function (e) {
+                var files = $("#file_video").get(0).files;  
+                var formData = new FormData();
+                formData.append(files[0].name, files[0]); 
+                var src = UploadImageOrVideo(formData);
+                if (src != null) {
+                    $("#VAddress").val(src);
+                     $('#mp4s').attr("src", src);
+                }
+        });
+          $(".upload-btn input").on("change", function (e) {
+                var files = $("#file").get(0).files;  
+                var formData = new FormData();
+                formData.append(files[0].name, files[0]); 
+                var src = UploadImageOrVideo(formData);
+                if (src != null) {
+                    $("#Vimage").val(src); 
+                    $('#imgSrc').attr("src", src);
+                }
+        });
+    })
+  
+</script>
+<h2>修改视频</h2>
+
+<div style="position:absolute;top:150px;right:100px;" id="show">
+    <img src="@Model.Vimage" width='200' height='200' id="imgSrc" />
+    <video controls="controls" width="300px">
+        <source src="@Model.VAddress" type="video/mp4" id="mp4s" />
+    </video>
+</div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal" style="overflow:hidden;">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.VID)
+    @Html.HiddenFor(model => model.UID)
+    @Html.HiddenFor(model => model.CreateTime)
+    <div class="form-group" style="display:none;">
+        @Html.LabelFor(model => model.UID, "UID", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.tb_User.User_Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.VName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.VName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.VName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.VAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.VAddress, new { htmlAttributes = new { @class = "form-control" }, })
+            @Html.ValidationMessageFor(model => model.VAddress, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-1">
+            <input type="button" class="btn btn-success" onclick="uploadVideo()" value="上传视频" />
+
+            <div class="upload">
+                <input type="file" accept="audio/*|video/*|image/*" name="" id="file_video" style="display:none">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Remake, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.Remake, new { htmlAttributes = new { @class = "form-control", @style = "width:330px;height:100px;" } })
+            @Html.ValidationMessageFor(model => model.Remake, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Vimage, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3">
+            @Html.EditorFor(model => model.Vimage, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Vimage, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-1">
+            <div class="upload-btn">
+                <input type="file" accept="audio/*|video/*|image/*" name="" id="file" style="display:none">
+            </div>
+            <input type="button" class="btn btn-success" onclick="uploadImage()" value="上传图片" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

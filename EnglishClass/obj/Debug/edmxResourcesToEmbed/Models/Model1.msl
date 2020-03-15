@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="db_EnglishClassModelStoreContainer" CdmEntityContainer="db_EnglishClassEntities">
+    <EntitySetMapping Name="tb_Library">
+      <EntityTypeMapping TypeName="db_EnglishClassModel.tb_Library">
+        <MappingFragment StoreEntitySet="tb_Library">
+          <ScalarProperty Name="Lid" ColumnName="Lid" />
+          <ScalarProperty Name="VID" ColumnName="VID" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Question" ColumnName="Question" />
+          <ScalarProperty Name="Answer1" ColumnName="Answer1" />
+          <ScalarProperty Name="Answer2" ColumnName="Answer2" />
+          <ScalarProperty Name="Answer3" ColumnName="Answer3" />
+          <ScalarProperty Name="TAnswer" ColumnName="TAnswer" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Message">
+      <EntityTypeMapping TypeName="db_EnglishClassModel.tb_Message">
+        <MappingFragment StoreEntitySet="tb_Message">
+          <ScalarProperty Name="MID" ColumnName="MID" />
+          <ScalarProperty Name="SID" ColumnName="SID" />
+          <ScalarProperty Name="AID" ColumnName="AID" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Plant">
+      <EntityTypeMapping TypeName="db_EnglishClassModel.tb_Plant">
+        <MappingFragment StoreEntitySet="tb_Plant">
+          <ScalarProperty Name="PID" ColumnName="PID" />
+          <ScalarProperty Name="UID" ColumnName="UID" />
+          <ScalarProperty Name="Nums" ColumnName="Nums" />
+          <ScalarProperty Name="Days" ColumnName="Days" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_RecordVideo">
+      <EntityTypeMapping TypeName="db_EnglishClassModel.tb_RecordVideo">
+        <MappingFragment StoreEntitySet="tb_RecordVideo">
+          <ScalarProperty Name="RID" ColumnName="RID" />
+          <ScalarProperty Name="UID" ColumnName="UID" />
+          <ScalarProperty Name="VID" ColumnName="VID" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_User">
+      <EntityTypeMapping TypeName="db_EnglishClassModel.tb_User">
+        <MappingFragment StoreEntitySet="tb_User">
+          <ScalarProperty Name="UID" ColumnName="UID" />
+          <ScalarProperty Name="User_Name" ColumnName="User_Name" />
+          <ScalarProperty Name="User_PWD" ColumnName="User_PWD" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Tel" ColumnName="Tel" />
+          <ScalarProperty Name="PState" ColumnName="PState" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Video">
+      <EntityTypeMapping TypeName="db_EnglishClassModel.tb_Video">
+        <MappingFragment StoreEntitySet="tb_Video">
+          <ScalarProperty Name="Vimage" ColumnName="Vimage" />
+          <ScalarProperty Name="VID" ColumnName="VID" />
+          <ScalarProperty Name="UID" ColumnName="UID" />
+          <ScalarProperty Name="VName" ColumnName="VName" />
+          <ScalarProperty Name="VAddress" ColumnName="VAddress" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="Remake" ColumnName="Remake" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

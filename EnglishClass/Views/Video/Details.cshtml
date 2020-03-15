@@ -1,0 +1,31 @@
+﻿@model EnglishClass.Models.tb_Video
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    span {
+    font-weight:bold;
+    font-size:18px;
+    }
+
+
+</style>
+
+<div id="left">
+    <h3>@Model.VName</h3>
+    <hr />
+    <p>作者:<span>@Model.tb_User.User_Name</span><a href="#"><img src="~/Images/timg (1).jpg" width="40" /></a>  </p>
+    <p>发布时间:<span> @Model.CreateTime</span></p>
+    <div>
+        <video controls="controls" width="785">
+            <source src="@Model.VAddress" type="video/mp4" />
+        </video>
+    </div>
+    <hr />
+    <h4>简介：</h4>
+    <p>@Model.Remake</p>
+</div>
+    @*实时通讯*@
+

@@ -1,0 +1,96 @@
+﻿@model IEnumerable<EnglishClass.Models.tb_Library>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.tb_Video.VName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.State)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Question)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Answer1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Answer2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Answer3)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TAnswer)
+        </th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.tb_Video.VName)
+    </td>
+    <td>
+        @if (item.State == 0)
+        {
+            <span style="color:green;">容易</span>
+
+        }
+        else if (item.State == 1)
+        {
+            <span style="color:blue">一般</span>
+        }
+        else
+        {
+            <span style="color:brown">困难</span>
+        }
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Question)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Answer1)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Answer2)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Answer3)
+    </td>
+    <td>
+        @if (item.TAnswer == "0")
+        {
+            <span style="color:green;">A</span>
+
+        }
+        else if (item.TAnswer == "1")
+        {
+            <span style="color:green">B</span>
+        }
+        else
+        {
+            <span style="color:green">C</span>
+        }
+    </td>
+
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.Lid }) |
+        @Html.ActionLink("Details", "Details", new { id = item.Lid }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.Lid })
+    </td>
+</tr>
+}
+
+</table>

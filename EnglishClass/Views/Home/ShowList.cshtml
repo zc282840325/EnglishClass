@@ -1,0 +1,108 @@
+﻿<!--图标库-->
+<link href="~/Content/bootstrap-grid.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://www.jq22.com/jquery/font-awesome.4.7.0.css">
+<link href="~/Content/showliststyle.css" rel="stylesheet" />
+@model IEnumerable<EnglishClass.Models.tb_Video>
+<!--核心样式-->
+<style type="text/css">
+    .box-content > a {
+        display: block;
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        margin: 0 auto;
+        border-radius: 40px;
+        color: white;
+        text-decoration: none;
+    }
+</style>
+
+
+<div class="demo">
+    <div class="container">
+
+        <div class="row">
+
+            @foreach (var item in Model)
+            {
+
+                <div class="col-md-4">
+                    <div class="box">
+                        <img src="@item.Vimage" width="340" height="247" />
+                        <div class="box-content">
+                            <h3 class="title">作者：@item.tb_User.User_Name</h3>
+                            <span class="post">上传时间:@item.CreateTime</span><br /><br />
+                             <a href="/Video/Details?id=@item.VID" class="btn-info">播放</a>
+                    <br />
+                            <span class="post"></span>
+                        </div>
+                        <h5>@item.VName</h5>
+                    </div>
+                </div>
+            }
+
+            @*<div class="col-md-4 ">
+                <div class="box">
+                    <img src="~/Images/img-2.png">
+                    <div class="box-content">
+                        <h3 class="title">作者：张三</h3>
+                        <span class="post">上传时间:2020-03-08</span><br /><br />
+                        <button class="btn-info" style="        width: 80px;
+        height: 80px;
+        border-radius: 50px;
+        border: 0px;">
+                            播放
+                        </button>
+                    </div>
+                    <h5>英语口语练习2</h5>
+                </div>
+            </div>
+            <div class="col-md-4 ">
+                <div class="box">
+                    <img src="~/Images/img-3.png">
+                    <div class="box-content">
+                        <h3 class="title">作者：张三</h3>
+                        <span class="post">上传时间:2020-03-08</span><br /><br />
+                        <button class="btn-info" style=" width: 80px; height: 80px; border-radius: 50px; border: 0px;">播放</button>
+                    </div>
+                    <h5>英语口语练习3</h5>
+                </div>
+            </div>
+            <div class="col-md-4 ">
+                <div class="box">
+                    <img src="~/Images/img-3.png">
+                    <div class="box-content">
+                        <h3 class="title">作者：张三</h3>
+                        <span class="post">上传时间:2020-03-08</span><br /><br />
+                        <button class="btn-info" style="width:80px;height:80px;border-radius:50px;border:0px;">播放</button>
+                    </div>
+                    <h5>英语口语练习3</h5>
+                </div>
+            </div>
+            <div class="col-md-4 ">
+                <div class="box">
+                    <img src="~/Images/img-3.png">
+                    <div class="box-content">
+                        <h3 class="title">作者：张三</h3>
+                        <span class="post">上传时间:2020-03-08</span><br /><br />
+                        <button class="btn-info" style="width:80px;height:80px;border-radius:50px;border:0px;">播放</button>
+                    </div>
+                    <h5>英语口语练习3</h5>
+                </div>
+            </div>
+            <div class="col-md-4 ">
+                <div class="box">
+                    <img src="~/Images/img-3.png">
+                    <div class="box-content">
+                        <h3 class="title">作者：张三</h3>
+                        <span class="post">上传时间:2020-03-08</span><br /><br />
+                        <button class="btn-info" style="width:80px;height:80px;border-radius:50px;border:0px;">播放</button>
+                    </div>
+                    <h5>英语口语练习3</h5>
+                </div>
+            </div>*@
+        </div>
+
+    </div>
+</div>
