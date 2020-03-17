@@ -5,8 +5,12 @@ using System.Web;
 
 namespace EnglishClass.Models
 {
-    public class ViewModel
+    public  class ViewModel
     {
+        public ViewModel()
+        {
+        }
+
         public ViewModel(int iD, string name)
         {
             ID = iD;
@@ -15,5 +19,6 @@ namespace EnglishClass.Models
 
         public int ID { get; set; }
         public string Name { get; set; }
+ 
     }
 }

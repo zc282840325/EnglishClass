@@ -11,8 +11,7 @@ namespace EnglishClass.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class tb_User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -24,7 +23,6 @@ namespace EnglishClass.Models
         }
     
         public int UID { get; set; }
-        [Display(Name = "用户名")]
         public string User_Name { get; set; }
         public string User_PWD { get; set; }
         public string State { get; set; }

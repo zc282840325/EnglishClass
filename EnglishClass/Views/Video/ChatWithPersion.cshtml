@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "ChatWithPersion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <style type="text/css">
+        #content ul {
+            list-style-type: none;
+        }
+
+        #content_right ul span:last-child {
+            background-color: #d0cfcf;
+            padding: 5px;
+        }
+
+        #content_right ul li {
+            margin: 10px 0px;
+        }
+
+        #content {
+            width: 65%;
+            height: 320px;
+        }
+
+        #content_left {
+            clear: both;
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: 300px;
+            width: 15%;
+            float: left;
+        }
+
+            #content_left ul {
+                text-align: center;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                list-style-type: none;
+            }
+
+                #content_left ul li {
+                    border-bottom: 1px solid gray;
+                    width: 100%;
+                    padding: 10px 0px;
+                background-color: #808080;
+            color: white;
+                }
+
+        #content_right {
+            overflow-x: hidden;
+            overflow-y: auto;
+            width: 85%;
+            height: 300px;
+            float: right;
+            border: 5px solid #808080;
+        }
+
+            #content_right button {
+                position: absolute;
+                right: 43%;
+            }
+
+        #input {
+            margin-top: 20px;
+            margin-left: 10%;
+        }
+
+    
+    </style>
+
+    <script type="text/javascript">
+        var count = 0;
+        $(function () {
+            var id=@ViewData["ID"];
+            LoadMessage(id);
+            $("#AID").val(id);
+            $("#send").click(function () {
+            var msg = $("#name").val();
+            var id = $("#AID").val();
+            $.ajax({
+                type: "post",
+                data: { "msg": msg,"id":id },
+                dataType: "json",
+                url: "/Video/ChatWithAddMessage",
+                success: function (data) {
+                    if (data.result == "1") {
+                        alert("添加成功!");
+                        LoadMessage(id);
+                      
+                    }
+                    else {
+                        alert(data.msg);
+                    }
+                }, error: function (e) {
+                    alert(e.responseText);
+                }
+            });
+            });
+
+          setInterval(function () {
+            var id = $("#AID").val();
+            if (id != null && id.length>0) {
+                LoadMessage(id);
+                add();
+            }
+        }, 1000);
+        });
+         function LoadMessage(id) {
+              $.ajax({
+                  type: "post",
+                  data: { "id": id },
+                  url: "/Video/ChatWithMessage",
+                  dataType:"json",
+                  success: function (data) {
+                      $("#msg").html("");
+                         var html = "";
+                            if (data.count > 0) {
+                          
+                            for (var i = 0; i < data.count; i++) {
+                                html += "<li>"+data["user"][i].Name+": <span>"+data["user"][i].Time+"</span><br /><span>"+data["user"][i].Content+"</span></li>";
+                            }
+                      }
+                      $("#msg").append(html);
+                      if (count!=data.count) {
+                          count = data.count;
+                      }
+                    
+                  }
+                  , error: function (e) {
+                        alert(e.responseText);
+                    }
+            });
+        }
+
+         function add() {       
+var div = document.getElementById('content_right'); 
+div.scrollTop = div.scrollHeight; 
+    }
+    </script>
+
+    <ul class="breadcrumb">
+        <li><a href="/Home">首页</a></li>
+        <li><a href="/Home/About">学习任务</a></li>
+        <li><a href="/Video/Details?id=@ViewData["ID"]">视频</a></li>
+        <li class="active">聊天室</li>
+    </ul>
+<h2>聊天室</h2>
+<div id="content">
+    <div id="content_left">
+        <ul id="persion">
+            <li> @ViewData["UserName"] <input type='hidden' value='@ViewData["ID"]' /></li>
+        </ul>
+    </div>
+
+    <div id="content_right">
+        <button>退出</button>
+        <ul id="msg">
+        </ul>
+    </div>
+</div>
+<div id="input">
+    请输入: <input type="text" name="name" id="name" /><input type="button" id="send" value="发送" />
+    <input type="hidden" value="" id="AID" />
+</div>
+
+

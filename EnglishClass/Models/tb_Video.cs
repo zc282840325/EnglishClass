@@ -11,8 +11,7 @@ namespace EnglishClass.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class tb_Video
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,21 +20,13 @@ namespace EnglishClass.Models
             this.tb_Library = new HashSet<tb_Library>();
             this.tb_RecordVideo = new HashSet<tb_RecordVideo>();
         }
-        [Display(Name = "视频标题")]
+    
         public int VID { get; set; }
-        public Nullable<int> UID { get; set; }
-        [Display(Name ="视频标题")]
+        public int UID { get; set; }
         public string VName { get; set; }
-        [Display(Name = "视频地址")]
         public string VAddress { get; set; }
-        [Display(Name = "创建时间")]
         public Nullable<System.DateTime> CreateTime { get; set; }
-        [Display(Name = "简介")]
-        [DataType(DataType.MultilineText)]
-
-        [StringLength(300, ErrorMessage = "录入的字符数超过了300")]
         public string Remake { get; set; }
-        [Display(Name = "封面图片")]
         public string Vimage { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

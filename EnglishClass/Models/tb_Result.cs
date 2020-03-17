@@ -12,12 +12,11 @@ namespace EnglishClass.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class tb_Message
+    public partial class tb_Result
     {
-        public int MID { get; set; }
-        public int SID { get; set; }
-        public int AID { get; set; }
-        public string Content { get; set; }
-        public System.DateTime CreateTime { get; set; }
+        public int RID { get; set; }
+        public int UID { get; set; }
+        public int Result { get; set; }
+        public int LID { get; set; }
     }
 }

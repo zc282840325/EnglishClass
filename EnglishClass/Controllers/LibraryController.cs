@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using EnglishClass.Models;
+using Newtonsoft.Json;
 
 namespace EnglishClass.Controllers
 {
@@ -35,7 +36,56 @@ namespace EnglishClass.Controllers
             }
             return View(tb_Library);
         }
+        public string  DetailsList(int? VID, int state)
+        {
+            
+           var tb_Library = db.tb_Library.Include(x=>x.tb_Video).Where(x => x.VID == VID && x.State == state).ToList();
+            List<tb_Library> list = new List<tb_Library>();
+            for (int i = 0; i < tb_Library.Count; i++)
+            {
+                list.Add(new Models.tb_Library() {VID= tb_Library[i].VID,Answer1=tb_Library[i].Answer1, Answer2 = tb_Library[i].Answer2, Answer3 = tb_Library[i].Answer3, Question = tb_Library[i].Question,Lid= tb_Library[i].Lid,State= tb_Library[i].State,TAnswer= tb_Library[i].TAnswer });
+            } 
+       var   result = "{\"count\":\"" + tb_Library.Count + "\",\"user\":" + JsonConvert.SerializeObject(list) + "}";
+            return result;
+        }
 
+
+        public void AddOrUpdata(int result,int LID)
+        {
+            int uid = Convert.ToInt32(Request.Cookies["UID"].Value);
+            var user = db.tb_Result.Where(x => x.UID == uid && x.LID == LID).FirstOrDefault();
+            if (user==null)
+            {
+                tb_Result rr = new tb_Result();
+                rr.Result = result;
+                rr.UID = uid;
+                rr.LID = LID;
+                db.tb_Result.Add(rr);
+                db.SaveChanges();
+            }
+            else
+            {
+                user.Result = result;
+                db.SaveChanges();
+            }
+        }
+
+        public void Check()
+        {
+            int uid = Convert.ToInt32(Request.Cookies["UID"].Value);
+            var list = db.tb_Result.Where(x => x.UID == uid).ToList();
+            var result="";
+            for (int i = 0; i < 3; i++)
+            {
+                var ss = from a in list join b in db.tb_Library on a.LID equals b.Lid
+                         where b.State==0 select b;
+                if (ss.Count()>=3)
+                {
+                    result += "";
+                }
+            }
+
+        }
         // GET: Library/Create
         public ActionResult Create()
         {

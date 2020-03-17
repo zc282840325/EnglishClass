@@ -136,6 +136,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -163,6 +164,9 @@
     <Compile Include="Models\tb_RecordVideo.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\tb_Result.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\tb_User.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -186,6 +190,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\add.jpg" />
     <Content Include="Images\b1.jpg" />
+    <Content Include="Images\chat.jpg" />
     <Content Include="Images\img-1.png" />
     <Content Include="Images\img-2.png" />
     <Content Include="Images\img-3.png" />
@@ -253,6 +258,7 @@
     <Content Include="Views\Library\Index.cshtml" />
     <Content Include="Views\Home\ShowList.cshtml" />
     <Content Include="Views\Video\ChatWith.cshtml" />
+    <Content Include="Views\Video\ChatWithPersion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

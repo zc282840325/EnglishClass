@@ -1,1 +1,191 @@
 ﻿
+@{
+    ViewBag.Title = "ChatWith";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    #content ul {
+        list-style-type: none;
+    }
+
+    #content_right ul span:last-child {
+        background-color: #d0cfcf;
+        padding: 5px;
+    }
+
+    #content_right ul li {
+        margin: 10px 0px;
+    }
+
+    #content {
+        width: 65%;
+        height: 320px;
+    }
+
+    #content_left {
+        clear: both;
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: 300px;
+        width: 15%;
+        float: left;
+    }
+
+        #content_left ul {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            list-style-type: none;
+        }
+
+            #content_left ul li {
+                border-bottom: 1px solid gray;
+                width: 100%;
+                padding: 10px 0px;
+            }
+
+    #content_right {
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 85%;
+        height: 300px;
+        float: right;
+        border: 5px solid #808080;
+    }
+
+        #content_right button {
+            position: absolute;
+            right: 43%;
+        }
+
+    #input {
+        margin-top: 20px;
+        margin-left: 10%;
+    }
+
+    .add {
+        background-color: #808080;
+        color: white;
+    }
+</style>
+
+<script type="text/javascript">
+    var count = 0;
+    $(function () {
+        LoadPersion();
+        setInterval(function () {
+            var id = $("#AID").val();
+            if (id != null && id.length > 0) {
+                LoadMessage(id);
+            }
+        }, 1000);
+        $("#send").click(function () {
+            var msg = $("#name").val();
+            var id = $("#AID").val();
+            $.ajax({
+                type: "post",
+                data: { "msg": msg, "id": id },
+                dataType: "json",
+                url: "/Video/ChatWithAddMessage",
+                success: function (data) {
+               
+                }, error: function (e) {
+                    alert(e.responseText);
+                }
+            });
+
+        });
+    });
+
+    function add() {
+        var div = document.getElementById('content_right');
+        div.scrollTop = div.scrollHeight;
+    }
+
+    function LoadMessage(id) {
+        $.ajax({
+            type: "post",
+            data: { "id": id },
+            url: "/Video/ChatWithMessage",
+            dataType: "json",
+            success: function (data) {
+                $("#msg").html("");
+                var html = "";
+                if (data.count > 0) {
+
+                    for (var i = 0; i < data.count; i++) {
+                        html += "<li>" + data["user"][i].Name + ": <span>" + data["user"][i].Time + "</span><br /><span>" + data["user"][i].Content + "</span></li>";
+                    }
+                }
+                $("#msg").append(html);
+                if (count != data.count) {
+                    add();
+                    count = data.count;
+                }
+
+            }
+            , error: function (e) {
+                alert(e.responseText);
+            }
+        });
+    }
+
+    function LoadPersion() {
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: "/Video/ChatWithPersions",
+            success: function (data) {
+                $("#persion").html("");
+                var html = "";
+                if (data.count > 0) {
+
+                    for (var i = 0; i < data.count; i++) {
+                        html += " <li>" + data.user[i].Name + "<input type='hidden' value='" + data.user[i].ID + "' /></li>";
+                    }
+                }
+                $("#persion").append(html);
+                LoadBind();
+
+            }, error: function (e) {
+                alert(e.responseText);
+            }
+        });
+    }
+
+    function LoadBind() {
+        $("#content_left ul li").bind("click", function () {
+            $(this).siblings("li").removeClass("add");
+            $(this).addClass("add");
+            var id = $(this).children("input").val();
+            $("#AID").val(id);
+            LoadMessage(id);
+        });
+    }
+
+</script>
+<ul class="breadcrumb">
+    <li><a href="/Home">首页</a></li>
+    <li class="active">聊天室</li>
+</ul>
+<h2>聊天室</h2>
+<div id="content">
+    <div id="content_left">
+        <ul id="persion">
+        </ul>
+    </div>
+
+    <div id="content_right">
+        <button>退出</button>
+        <ul id="msg">
+        </ul>
+    </div>
+</div>
+<div id="input">
+    请输入: <input type="text" name="name" id="name" /><input type="button" id="send" value="发送" />
+    <input type="hidden" value="" id="AID" />
+</div>
+
+
+

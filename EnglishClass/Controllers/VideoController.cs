@@ -9,6 +9,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using EnglishClass.Models;
+using Newtonsoft.Json;
 
 namespace EnglishClass.Controllers
 {
@@ -212,10 +213,70 @@ namespace EnglishClass.Controllers
 
         }
 
-        public PartialViewResult ChatWith()
+        public ActionResult ChatWith()
+        {                                                                           
+            return View();
+        }
+    
+        public ActionResult ChatWithPersion(int id)
         {
-            return PartialView();
+            int uid = Convert.ToInt32(Request.Cookies["UID"].Value);
+            var user = db.tb_User.Where(x=>x.UID==id).FirstOrDefault();
+            if (user!=null)
+            {
+                ViewData["UserName"] = user.User_Name;
+                ViewData["ID"] = id;
+            }
+            return View();
+        }
+        public string ChatWithPersions()
+        {
+            int uid = Convert.ToInt32(Request.Cookies["UID"].Value);
 
+            var user = (from a in db.tb_Message
+                        join b in db.tb_User 
+                        on a.AID equals b.UID 
+                        where a.SID == uid
+                       select new ViewModel() {ID=b.UID,Name=b.User_Name }).Distinct().ToList();
+     
+            var result = "{\"count\":\"" + user.Count + "\",\"user\":" + JsonConvert.SerializeObject(user) + "}";
+            return result;
+        }
+        public string ChatWithMessage(int id)
+        {
+            int uid = Convert.ToInt32(Request.Cookies["UID"].Value);
+            List<MessageModel> user = (from a in db.tb_Message
+                                    join b in db.tb_User on a.AID equals b.UID
+                                    where (a.AID == uid && a.SID==id)||(a.AID == id && a.SID == uid)
+                                    select new MessageModel() {  Name = b.User_Name,Time=a.CreateTime,Content=a.Content, State = b.State }).ToList();
+            var result = "{\"count\":\"" + user.Count + "\",\"user\":" + JsonConvert.SerializeObject(user) + "}";
+            return result;
+        }
+        public string ChatWithAddMessage(string msg,int id)
+        {
+            int result = 0;
+            string rmsg = string.Empty;
+            try
+            {
+                int uid = Convert.ToInt32(Request.Cookies["UID"].Value);
+                tb_Message message = new tb_Message();
+                message.SID = uid;
+                message.AID = id;
+                message.Content = msg;
+                message.CreateTime = DateTime.Now;
+                db.tb_Message.Add(message);
+                db.SaveChanges();
+                result = 1;
+                rmsg = "添加成功！";
+            }
+            catch (Exception ex)
+            {
+                result = 0;
+                rmsg = ex.Message;
+            }
+        
+            var ss = "{\"result\":\"" + result + "\",\"msg\":\"" + rmsg + "\"}";
+            return ss;
         }
         protected override void Dispose(bool disposing)
         {
@@ -225,5 +286,7 @@ namespace EnglishClass.Controllers
             }
             base.Dispose(disposing);
         }
+
+   
     }
 }

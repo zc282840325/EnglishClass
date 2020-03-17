@@ -48,6 +48,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="tb_Result">
+      <EntityTypeMapping TypeName="db_EnglishClassModel.tb_Result">
+        <MappingFragment StoreEntitySet="tb_Result">
+          <ScalarProperty Name="RID" ColumnName="RID" />
+          <ScalarProperty Name="UID" ColumnName="UID" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="LID" ColumnName="LID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="tb_User">
       <EntityTypeMapping TypeName="db_EnglishClassModel.tb_User">
         <MappingFragment StoreEntitySet="tb_User">
@@ -63,13 +73,13 @@
     <EntitySetMapping Name="tb_Video">
       <EntityTypeMapping TypeName="db_EnglishClassModel.tb_Video">
         <MappingFragment StoreEntitySet="tb_Video">
-          <ScalarProperty Name="Vimage" ColumnName="Vimage" />
           <ScalarProperty Name="VID" ColumnName="VID" />
           <ScalarProperty Name="UID" ColumnName="UID" />
           <ScalarProperty Name="VName" ColumnName="VName" />
           <ScalarProperty Name="VAddress" ColumnName="VAddress" />
           <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
           <ScalarProperty Name="Remake" ColumnName="Remake" />
+          <ScalarProperty Name="Vimage" ColumnName="Vimage" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

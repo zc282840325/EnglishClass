@@ -18,10 +18,10 @@
       <PropertyRef Name="MID" />
     </Key>
     <Property Name="MID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="SID" Type="int" />
-    <Property Name="AID" Type="int" />
-    <Property Name="Content" Type="varchar(max)" />
-    <Property Name="CreateTime" Type="date" />
+    <Property Name="SID" Type="int" Nullable="false" />
+    <Property Name="AID" Type="int" Nullable="false" />
+    <Property Name="Content" Type="varchar(max)" Nullable="false" />
+    <Property Name="CreateTime" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="tb_Plant">
     <Key>
@@ -43,6 +43,15 @@
     <Property Name="VID" Type="int" />
     <Property Name="CreateTime" Type="date" />
   </EntityType>
+  <EntityType Name="tb_Result">
+    <Key>
+      <PropertyRef Name="RID" />
+    </Key>
+    <Property Name="RID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UID" Type="int" Nullable="false" />
+    <Property Name="Result" Type="int" Nullable="false" />
+    <Property Name="LID" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="tb_User">
     <Key>
       <PropertyRef Name="UID" />
@@ -59,7 +68,7 @@
       <PropertyRef Name="VID" />
     </Key>
     <Property Name="VID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="UID" Type="int" />
+    <Property Name="UID" Type="int" Nullable="false" />
     <Property Name="VName" Type="varchar" MaxLength="50" />
     <Property Name="VAddress" Type="varchar(max)" />
     <Property Name="CreateTime" Type="date" />
@@ -115,7 +124,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_tb_Video_tb_User">
-    <End Role="tb_User" Type="Self.tb_User" Multiplicity="0..1" />
+    <End Role="tb_User" Type="Self.tb_User" Multiplicity="1" />
     <End Role="tb_Video" Type="Self.tb_Video" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="tb_User">
@@ -131,6 +140,7 @@
     <EntitySet Name="tb_Message" EntityType="Self.tb_Message" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Plant" EntityType="Self.tb_Plant" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_RecordVideo" EntityType="Self.tb_RecordVideo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Result" EntityType="Self.tb_Result" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_User" EntityType="Self.tb_User" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="tb_Video" EntityType="Self.tb_Video" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_tb_Library_tb_Video" Association="Self.FK_tb_Library_tb_Video">

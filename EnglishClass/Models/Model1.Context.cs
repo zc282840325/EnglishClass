@@ -29,6 +29,7 @@ namespace EnglishClass.Models
         public virtual DbSet<tb_Message> tb_Message { get; set; }
         public virtual DbSet<tb_Plant> tb_Plant { get; set; }
         public virtual DbSet<tb_RecordVideo> tb_RecordVideo { get; set; }
+        public virtual DbSet<tb_Result> tb_Result { get; set; }
         public virtual DbSet<tb_User> tb_User { get; set; }
         public virtual DbSet<tb_Video> tb_Video { get; set; }
     }
