@@ -11,7 +11,8 @@ namespace EnglishClass.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class tb_User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,12 +22,17 @@ namespace EnglishClass.Models
             this.tb_RecordVideo = new HashSet<tb_RecordVideo>();
             this.tb_Video = new HashSet<tb_Video>();
         }
-    
+
         public int UID { get; set; }
+        [Display(Name ="用户名")]
         public string User_Name { get; set; }
+        [Display(Name = "密码")]
         public string User_PWD { get; set; }
+        [Display(Name = "角色")]
         public string State { get; set; }
+        [Display(Name = "联系电话")]
         public string Tel { get; set; }
+        [Display(Name = "阅读模式")]
         public string PState { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -11,16 +11,23 @@ namespace EnglishClass.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class tb_Library
     {
         public int Lid { get; set; }
         public Nullable<int> VID { get; set; }
+        [Display(Name = "题目难易度")]
         public Nullable<int> State { get; set; }
+        [Display(Name = "问题")]
         public string Question { get; set; }
+        [Display(Name = "选项A")]
         public string Answer1 { get; set; }
+        [Display(Name = "选项B")]
         public string Answer2 { get; set; }
+        [Display(Name = "选项C")]
         public string Answer3 { get; set; }
+        [Display(Name = "正确选项")]
         public string TAnswer { get; set; }
     
         public virtual tb_Video tb_Video { get; set; }

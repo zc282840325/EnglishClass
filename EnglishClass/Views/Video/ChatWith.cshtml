@@ -63,7 +63,9 @@
         margin-top: 20px;
         margin-left: 10%;
     }
-
+    #msg {
+    clear:both;
+    }
     .add {
         background-color: #808080;
         color: white;
@@ -80,6 +82,7 @@
                 LoadMessage(id);
             }
         }, 1000);
+
         $("#send").click(function () {
             var msg = $("#name").val();
             var id = $("#AID").val();
@@ -94,6 +97,10 @@
                     alert(e.responseText);
                 }
             });
+
+        });
+
+        $("#btn_out").click(function () {
 
         });
     });
@@ -113,9 +120,13 @@
                 $("#msg").html("");
                 var html = "";
                 if (data.count > 0) {
-
                     for (var i = 0; i < data.count; i++) {
-                        html += "<li>" + data["user"][i].Name + ": <span>" + data["user"][i].Time + "</span><br /><span>" + data["user"][i].Content + "</span></li>";
+                      
+                               html += "<li >" + data["user"][i].Name + ": <span>" + data["user"][i].Time + "</span><br /><span id='own'>" + data["user"][i].Content + "</span></li>";
+                 
+                             html += "<li >" + data["user"][i].Name + ": <span>" + data["user"][i].Time + "</span><br /><span id='other'>" + data["user"][i].Content + "</span></li>";
+                   
+                     
                     }
                 }
                 $("#msg").append(html);
@@ -163,7 +174,6 @@
             LoadMessage(id);
         });
     }
-
 </script>
 <ul class="breadcrumb">
     <li><a href="/Home">首页</a></li>
@@ -177,7 +187,7 @@
     </div>
 
     <div id="content_right">
-        <button>退出</button>
+        <button class="btn btn-primary"  value="" id="btn_out">退出</button>
         <ul id="msg">
         </ul>
     </div>

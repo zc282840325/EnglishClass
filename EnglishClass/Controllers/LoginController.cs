@@ -13,6 +13,10 @@ namespace EnglishClass.Controllers
 
         public ActionResult Index()
         {
+            if (Request.Cookies["UID"]!=null)
+            {
+                return Redirect("/Home/Index");
+            }
             return View();
         }
         public ActionResult Index2()

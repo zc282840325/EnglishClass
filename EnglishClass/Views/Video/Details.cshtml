@@ -8,52 +8,89 @@
     var datalist = new Array();
     var res = new Array();
     var tres = new Array();
-    var i = 0;
+    var size = 0;
     $(function () {
         $("#result").hide();
         $("#next").show();
         //监控视频播放完毕
     var md=document.getElementsByTagName("video")[0];
         md.addEventListener("ended", function () {
-
+            size = 0;
+            UpdateState();
             $("#myModal").modal("show");
     })
     });
     //检查你做过的类型
-    function check() {
-        $.ajax({
-
+    function UpdateState() {
+            $.ajax({
+            type: "GET",
+                dataType: "JSON",
+                data: { "vid": $("#vid").val() },
+            async: false,
+            url: "/Library/Check",
+                   success: function (data) {
+                       $("#btn_list").html("");
+                       var html = "";
+                       html += GetHtml(0, data["list"][0], "简单","btn btn-success");
+                       html += GetHtml(1, data["list"][1], "一般","btn btn-info");
+                       html += GetHtml(2, data["list"][2], "困难", "btn btn-danger");
+                       $("#btn_list").html(html);
+             
+                   }, error: function (e) {
+                       alert(e.responseText);
+            }
         });
     }
-
+    function GetHtml(a, b,c,d) {
+        var html = "";
+        if (b==0) {
+          html += " <button class='"+d+"' style='width:150px;' value='"+a+"' onclick='Select(this)'>"+c+"</button>";
+        }
+        else {
+           html += " <button class='"+d+"' disabled='disabled' style='width:150px;' value='"+a+"' onclick='Select(this)'>"+c+"</button>";
+        }
+        return html;
+    }
     //选择答题难度
     function Select(obj) {
         $("#myModal").modal("hide");
         $("#myModal2").modal("show");
-
-        GetData(0);
-        i = 0;
-        Print(i);
+        GetData($(obj).val());
+        size = 0;
+        Print(size);
+        $("#next").show();
     }
     //关闭模式1
     function colesmyModal() {
-        alert("您还未答题，请答题！");
+        $.ajax({
+            type: "GET",
+            dataType: "JSON",
+            data: { "VID": $("#vid").val() },
+            async: false,
+            url: "/Library/CheckSelect",
+            success: function (data) {tb_User
+                if (data.state == 1) {
+                    alert(data.msg);
+                }
+            }
+        })
     }
     //关闭模式2
     function colesmyModal2() {
         $("#myModal2").modal("hide");
+        UpdateState();
          $("#myModal").modal("show");
     }
     //获取数据
     function GetData(state) {
+      datalist.splice(0,datalist.length);  
         $.ajax({
             type: "post",
             data: { "VID": $("#vid").val(), "state": state },
-              async: false,
+            async: false,
             dataType: "json",
             url: "/Library/DetailsList",
             success: function (data) {
-    
                 for (var i = 0; i < data.count; i++) {
                     datalist.push(data["user"][i]);
                 }
@@ -74,15 +111,15 @@
             alert("请选择选择！");
         }
         else {
-            i++;
-            Print(i);
+            size++;
+            Print(size);
         }
     }
     //打印题目
     function Print(i) {
+        $("#ans").html("");
         var data = datalist[i];
         $("#myModalLabel").html("");
-        $("#ans").html("");
         $("#myModalLabel").html("<span>[" + (i + 1) + "/3]</span> " + (i + 1) + "." + data.Question + "");
         $("#LID").val(data.Lid);
         $("#ans").append(" <li><input type='radio' name='1' value='0' onclick='Select2(this)'/>A." + data.Answer1 + "</li>");
@@ -126,7 +163,7 @@
              }
         });
         if (!result) {
-            alert("请选择选择！");
+            alert("请选择选项！");
         }
         else {
         $("#myModalLabel").html("");
@@ -141,8 +178,17 @@
                 html += "<li>第"+(i+1)+"题：你选择的答案是" + Get(res[i]) + ",正确答案是:" + Get(tres[i]) + "</li>";
             }
             html += "<li>恭喜您，您一共答对:" + count + "题！</li>";
-            $("#ans").append(html);
+            $("#ans").html(html);
             $("#result").hide();
+            size = 0;
+            setTimeout(function () {
+                    SetResult();
+            }, 1000);
+            size = 0;
+            datalist.splice(0, datalist.length);
+            res.splice(0, res.length);
+            tres.splice(0, tres.length);
+        
         }
     }
     //转换答案
@@ -156,6 +202,26 @@
         else {
              return "C";
         }
+    }
+    //记录看完
+    function SetResult() {
+           $.ajax({
+            type: "post",
+            data: { "VID": $("#vid").val() },
+            async: false,
+            dataType: "json",
+            url: "/Library/AddRecordVideo",
+               success: function (data) {
+                   if (data.state=="0") {
+                           alert("当前课程已完成！");
+                   } else {
+                      alert(data.msg);
+                   }
+               
+               }, error: function (e) {
+               
+                }
+        });
     }
 </script>
 <style type="text/css">
@@ -189,6 +255,7 @@
     <hr />
     <h4>简介：</h4>
     <p>@Model.Remake</p>
+
 </div>
 
 
@@ -199,10 +266,10 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="colesmyModal()">&times;</button>
                 <h4 class="modal-title" id="myModalLabel1">请选择答题难度</h4>
             </div>
-            <div class="modal-body">
-                    <button class="btn btn-success" style="width:150px;" value="0" onclick="Select(this)">简单</button>
-                    <button class="btn btn-info" style="width:150px;" value="1"  onclick="Select(this)">一般</button>
-                    <button class="btn btn-danger" style="width:150px;" value="2" onclick="Select(this)">困难</button>
+            <div class="modal-body" id="btn_list">
+                   
+                    @*<button class="btn btn-info" style="width:150px;" value="1"  onclick="Select(this)">一般</button>*@
+                    @*<button class="btn btn-danger" style="width:150px;" value="2" onclick="Select(this)">困难</button>*@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" onclick="colesmyModal()">关闭</button>

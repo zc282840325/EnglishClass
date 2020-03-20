@@ -6,54 +6,15 @@
 <script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        InitData();
 
+        InitData();
+        InitState();
+        InitList(1);
+        BindLi();
+        $("[data-toggle='tooltip']").tooltip();
         $("#nums").val($("#old_nums").html());
         $("#days").val($("#old_days").html());
 
-        $("#btn_add").click(function () {
-            var nums = $("#nums").val();
-            var days = $("#days").val();
-            var r = /^[1-9][0-9]+$/gi;
-            if (nums == "" || $.trim(nums).length == 0) {
-                alert("课程数不能为空！");
-                return;
-            }
-            if (days == "" || $.trim(days).length == 0) {
-                alert("天数不能为空！");
-                return;
-            }
-
-            if (isNaN(nums)) {
-                alert("课程数不是数字");
-                return;
-            }
-            if (isNaN(days)) {
-                alert("天数不是数字");
-                return;
-            }
-            //更新数据
-            $.ajax({
-                type: "Post",
-                url: "/Home/AddorUpdatePlant",
-                data: { 'nums': nums, 'days': days },
-                dataType: "json",
-                success: function (data) {
-                    if (data.result == "1") {
-                        $('#myModal').modal('hide');
-                        InitData();
-                    }
-                    else {
-                        alert(data.Msg);
-                    }
-
-                },
-                error: function (e) {
-                    alert(e.responseText);
-                }
-            });
-
-        });
     });
 
 
@@ -64,6 +25,68 @@
             success: function (data) {
                 $("#top").html(data);
             }
+        });
+    }
+    function InitState() {
+            $.ajax({
+            type: "Get",
+                url: "/Home/InitState",
+                dataType:"json",
+            success: function (data) {
+                    $("#plant").html("");
+                    var html = "";
+                if (data.result=="0") {
+                    html += "<button type='button' class='btn btn-info' data-toggle='tooltip' title='按照视频排列顺序播放' value='1' onclick='Update(this)'> 专家模式</button><button type='button' class='btn btn-success' data-toggle='tooltip' title='视频自由播放' value='2' onclick='Update(this)'> 自由模式</button>";
+                    }
+                else if (data.result=="1") {
+                    html += " <h4 style='color:#51d9f7;'>当前模式：专家模式</h4><button class='btn btn-default' onclick='Out()'>退出</button>";
+                    }
+                else {
+                    html += " <h4 style='color:#51d9f7;'>当前模式：自由模式</h4><button class='btn btn-default' onclick='Out()'>退出</button>";
+                    }
+                    $("#plant").html(html);
+            }
+        });
+    }
+    function Out() {
+            $.ajax({
+            type: "Post",
+                url: "/Home/DeleteState",
+                async: false,
+               success: function (data) {
+                   
+                        InitState();
+            }
+        });
+    }
+    function Update(obj) {
+        var state = $(obj).val();
+           $.ajax({
+               type: "Post",
+               url: "/Home/ShowList",
+               data: { "state": state },
+               success: function (data) {
+                   InitState();
+            }
+        });
+    }
+
+    function InitList(page) {
+        $("#showlist").html("");
+        $.ajax({
+               type: "Post",
+               url: "/Home/ShowList",
+               data: { "page": page },
+               success: function (data) {
+               $("#showlist").html(data);
+            }
+        })
+    }
+
+    function BindLi() {
+        $("#ullist li").bind("click", function () {
+            $(this).siblings("li").removeClass("active");
+            $(this).addClass("active");
         });
     }
 </script>
@@ -84,8 +107,7 @@
         margin: 5px;
     }
 </style>
-<script type="text/javascript">
-</script>
+
 <ul class="breadcrumb">
     <li><a href="/Home">首页</a></li>
     <li class="active">学习任务</li>
@@ -96,14 +118,41 @@
 
 </div>
 
+<h3>学习计划</h3>
+<hr />
+<div id="plant">
 
-<h3>视频资源</h3>
-
-<div style="clear:both;">
-    @Html.Action("ShowList", "Home")
 </div>
 
-<hr/>
+
+<h3>视频资源</h3>
+<hr />
+<div style="clear:both;">
+    <div id="showlist"></div>
+    @*@Html.Action("ShowList", "Home",new {id=0 })*@
+
+    <div style="text-align:center;margin:0 auto;">
+        <ul class="pagination pagination-lg" id="ullist">
+            <li><a href="#" onclick="InitList(0)">&laquo;</a></li>
+            @for (int i =1; i <= Convert.ToInt32(@ViewData["list"]); i++)
+            {
+                if (i == 1)
+                {
+                    <li class="active"><a href="#" onclick="InitList(@i)">@i</a></li>
+                }
+                else
+                {
+                    <li><a href="#" onclick="InitList(@i)">@i</a></li>
+                }
+
+            }
+            <li><a href="#" onclick="InitList(@ViewData["list"])">&raquo;</a></li>
+        </ul>
+    </div>
+</div>
+
+<hr />
+
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -115,11 +164,11 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="name">制定课程数</label>
-                    <input type="text" class="form-control" id="nums" placeholder="请输入课程数">
+                    <input type="text" class="form-control" id="nums" placeholder="请输入课程数" value="@ViewData["old_nums"]" />
                 </div>
                 <div class="form-group">
                     <label for="name">制定完成天数</label>
-                    <input type="text" class="form-control" id="days" placeholder="请输入课程数">
+                    <input type="text" class="form-control" id="days" placeholder="请输入课程数" value="@ViewData["old_days"]" />
                 </div>
             </div>
             <div class="modal-footer">

@@ -1,0 +1,79 @@
+﻿@model EnglishClass.Models.tb_User
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <ul class="breadcrumb">
+        <li><a href="/Home">首页</a></li>
+        <li class="active">个人信息</li>
+    </ul>
+<h2>个人信息</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.User_Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User_Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User_PWD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User_PWD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+
+        <dd>
+            @if (Model.State == "0")
+            {
+                <span>学生</span>
+            }
+            else
+            {
+                <span>老师</span>
+            }
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PState)
+        </dt>
+
+        <dd>
+            @if (Model.PState == null)
+            {
+                <span>未选择</span>
+            }
+            else if (Model.PState == "1")
+            {
+                <span>专家模式</span>
+            }
+            else
+            {
+                <span>自由模式</span>
+            }
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("修改", "Edit", new { id = Model.UID }) 
+
+</p>

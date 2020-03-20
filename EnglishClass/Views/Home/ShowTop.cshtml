@@ -17,6 +17,103 @@
         margin: 5px;
     }
 </style>
+<script type="text/javascript">
+    $(function () {
+        if(@ViewData["old_nums"].ToString() == "0")
+        {
+            $("#btn_start").show();
+            $("#delete").hide();
+            $("#update").hide();
+         }
+        else {
+            $("#btn_start").hide();
+            $("#delete").show();
+            $("#update").show();
+        }
+          $("#btn_add").click(function () {
+                AddOrUpdate();
+            });
+
+          $("#update").click(function () {
+              $("#nums").val(@ViewData["old_nums"]);
+              $("#days").val(@ViewData["old_days"]);
+            });
+
+        
+        $("#delete").click(function () {
+                var pid = $("#PID").val();
+               $.ajax({
+                type: "Post",
+                url: "/Home/Delete",
+                data: { 'pid': pid},
+                dataType: "json",
+                async: false,
+                success: function (data) {
+                    },
+                error: function (e) {
+                    }
+                });
+                Clean();
+            $("#update").hide();
+            $("#delete").hide();
+            $("#btn_start").show();
+            });
+        });
+
+    function AddOrUpdate() {
+            var nums = $("#nums").val();
+            var days = $("#days").val();
+            var r = /^[1-9][0-9]+$/gi;
+            if (nums == "" || $.trim(nums).length == 0) {
+                alert("课程数不能为空！");
+                return;
+            }
+            if (days == "" || $.trim(days).length == 0) {
+                alert("天数不能为空！");
+                return;
+            }
+
+            if (isNaN(nums)) {
+                alert("课程数不是数字");
+                return;
+            }
+            if (isNaN(days)) {
+                alert("天数不是数字");
+                return;
+            }
+            //更新数据
+            $.ajax({
+                type: "Post",
+                url: "/Home/AddorUpdatePlant",
+                data: { 'nums': nums, 'days': days },
+                dataType: "json",
+                success: function (data) {
+                    if (data.result == "1") {
+                        $('#myModal').modal('hide');
+                        InitData();
+                    }
+                    else {
+                        alert(data.Msg+"123213");
+                    }
+
+                },
+                error: function (e) {
+                    alert(e.responseText);
+                }
+            });
+
+    }
+
+    function Clean() {
+        $("#old_nums").text("0");
+        $("#old_days").html("0");
+        $("#now_nums").html("0");
+        $("#now_days").html("0");
+        $("#future_nums").html("0");
+         $("#future_days").html("0");
+    }
+</script>
+<input type="hidden" value="@ViewData["pid"]" id="PID" />
 <h4>制定课程：</h4><label id="old_nums">@ViewData["old_nums"]</label>
 <h4>制定天数：</h4><label id="old_days">@ViewData["old_days"]</label><span class="a">|</span>
 <h4>完成课程：</h4><label id="now_nums">@ViewData["now_nums"]</label>
@@ -24,9 +121,12 @@
 <h4>剩余课程：</h4><label id="future_nums">@ViewData["future_nums"]</label>
 <h4>预计天数：</h4><label id="future_days">@ViewData["future_days"]</label>
   &nbsp;
-@if (@ViewData["old_nums"].ToString() == "0")
-{
-    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">制定学习计划</button>
-}
+
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="btn_start">制定学习计划</button>
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal" id="update">修改计划</button>
+    <button class="btn btn-default btn-lg" id="delete">退出计划</button>
+
+
+
 
 

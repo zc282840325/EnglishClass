@@ -20,13 +20,20 @@ namespace EnglishClass.Controllers
         // GET: Video
         public ActionResult Index()
         {
-            var tb_Video = db.tb_Video.Include(t => t.tb_User);
+            int uid = Convert.ToInt32(Request.Cookies["UID"].Value);
+            var tb_Video = db.tb_Video.Include(t => t.tb_User).Where(x=>x.UID==uid);
             return View(tb_Video.ToList());
         }
 
         // GET: Video/Details/5
         public ActionResult Details(int? id)
         {
+            int uid = Convert.ToInt32(Request.Cookies["UID"].Value);
+            var user = db.tb_User.Where(x => x.UID == uid).FirstOrDefault();
+            if (user.PState==null)
+            {
+               return RedirectToAction("About", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -57,6 +64,7 @@ namespace EnglishClass.Controllers
             tb_Video.UID = Convert.ToInt32(Request.Cookies["UID"].Value);
             if (ModelState.IsValid)
             {
+                tb_Video.State = 0;
                 db.tb_Video.Add(tb_Video);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -90,6 +98,7 @@ namespace EnglishClass.Controllers
         public ActionResult Edit([Bind(Include = "VID,UID,VName,VAddress,CreateTime,Remake,Vimage")] tb_Video tb_Video)
         {
             tb_Video.UID = Convert.ToInt32(Request.Cookies["UID"].Value);
+            tb_Video.State = 0;
             if (ModelState.IsValid)
             {
                 db.Entry(tb_Video).State = EntityState.Modified;

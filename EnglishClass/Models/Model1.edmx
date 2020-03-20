@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="db_EnglishClassModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="db_EnglishClassModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tb_Library">
           <Key>
             <PropertyRef Name="Lid" />
@@ -79,6 +79,7 @@
           <Property Name="CreateTime" Type="date" />
           <Property Name="Remake" Type="varchar(max)" />
           <Property Name="Vimage" Type="varchar" MaxLength="255" />
+          <Property Name="State" Type="int" />
         </EntityType>
         <Association Name="FK_tb_Library_tb_Video">
           <End Role="tb_Video" Type="Self.tb_Video" Multiplicity="0..1" />
@@ -169,8 +170,7 @@
             <End Role="tb_Video" EntitySet="tb_Video" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="db_EnglishClassModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -258,6 +258,7 @@
           <NavigationProperty Name="tb_Library" Relationship="Self.FK_tb_Library_tb_Video" FromRole="tb_Video" ToRole="tb_Library" />
           <NavigationProperty Name="tb_RecordVideo" Relationship="Self.FK_tb_RecordVideo_tb_Video" FromRole="tb_Video" ToRole="tb_RecordVideo" />
           <NavigationProperty Name="tb_User" Relationship="Self.FK_tb_Video_tb_User" FromRole="tb_Video" ToRole="tb_User" />
+          <Property Name="State" Type="Int32" />
         </EntityType>
         <Association Name="FK_tb_Library_tb_Video">
           <End Role="tb_Video" Type="Self.tb_Video" Multiplicity="0..1" />
@@ -426,6 +427,7 @@
           <EntitySetMapping Name="tb_Video">
             <EntityTypeMapping TypeName="db_EnglishClassModel.tb_Video">
               <MappingFragment StoreEntitySet="tb_Video">
+                <ScalarProperty Name="State" ColumnName="State" />
                 <ScalarProperty Name="VID" ColumnName="VID" />
                 <ScalarProperty Name="UID" ColumnName="UID" />
                 <ScalarProperty Name="VName" ColumnName="VName" />

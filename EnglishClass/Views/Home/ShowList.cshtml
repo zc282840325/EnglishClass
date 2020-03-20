@@ -2,6 +2,7 @@
 <link href="~/Content/bootstrap-grid.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://www.jq22.com/jquery/font-awesome.4.7.0.css">
 <link href="~/Content/showliststyle.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.4.1.js"></script>
 @model IEnumerable<EnglishClass.Models.tb_Video>
 <!--核心样式-->
 <style type="text/css">
@@ -17,7 +18,29 @@
         text-decoration: none;
     }
 </style>
-
+<script type="text/javascript">
+    function Check(obj) {
+        var resu = false;
+        //1.验证是否选择了模式
+        //2.判断选择的模式
+        $.ajax({
+            type: "post",
+            data: { "VID": obj },
+            url: "/Home/Check",
+            dataType:"json",
+            async: false,
+            success: function (data) {
+                if (data.result == "2") {
+                    resu = true;
+                }
+                else {
+                    alert(data.msg);
+                }
+            }
+        });
+        return resu;
+    }
+</script>
 
 <div class="demo">
     <div class="container">
@@ -26,83 +49,22 @@
 
             @foreach (var item in Model)
             {
-
                 <div class="col-md-4">
                     <div class="box">
                         <img src="@item.Vimage" width="340" height="247" />
                         <div class="box-content">
                             <h3 class="title">作者：@item.tb_User.User_Name</h3>
                             <span class="post">上传时间:@item.CreateTime</span><br /><br />
-                             <a href="/Video/Details?id=@item.VID" class="btn-info">播放</a>
-                    <br />
+                            <a href="/Video/Details?id=@item.VID" class="btn-info" onclick="return Check(@item.VID)">播放</a>
+                            <br />
                             <span class="post"></span>
                         </div>
                         <h5>@item.VName</h5>
                     </div>
                 </div>
             }
-
-            @*<div class="col-md-4 ">
-                <div class="box">
-                    <img src="~/Images/img-2.png">
-                    <div class="box-content">
-                        <h3 class="title">作者：张三</h3>
-                        <span class="post">上传时间:2020-03-08</span><br /><br />
-                        <button class="btn-info" style="        width: 80px;
-        height: 80px;
-        border-radius: 50px;
-        border: 0px;">
-                            播放
-                        </button>
-                    </div>
-                    <h5>英语口语练习2</h5>
-                </div>
-            </div>
-            <div class="col-md-4 ">
-                <div class="box">
-                    <img src="~/Images/img-3.png">
-                    <div class="box-content">
-                        <h3 class="title">作者：张三</h3>
-                        <span class="post">上传时间:2020-03-08</span><br /><br />
-                        <button class="btn-info" style=" width: 80px; height: 80px; border-radius: 50px; border: 0px;">播放</button>
-                    </div>
-                    <h5>英语口语练习3</h5>
-                </div>
-            </div>
-            <div class="col-md-4 ">
-                <div class="box">
-                    <img src="~/Images/img-3.png">
-                    <div class="box-content">
-                        <h3 class="title">作者：张三</h3>
-                        <span class="post">上传时间:2020-03-08</span><br /><br />
-                        <button class="btn-info" style="width:80px;height:80px;border-radius:50px;border:0px;">播放</button>
-                    </div>
-                    <h5>英语口语练习3</h5>
-                </div>
-            </div>
-            <div class="col-md-4 ">
-                <div class="box">
-                    <img src="~/Images/img-3.png">
-                    <div class="box-content">
-                        <h3 class="title">作者：张三</h3>
-                        <span class="post">上传时间:2020-03-08</span><br /><br />
-                        <button class="btn-info" style="width:80px;height:80px;border-radius:50px;border:0px;">播放</button>
-                    </div>
-                    <h5>英语口语练习3</h5>
-                </div>
-            </div>
-            <div class="col-md-4 ">
-                <div class="box">
-                    <img src="~/Images/img-3.png">
-                    <div class="box-content">
-                        <h3 class="title">作者：张三</h3>
-                        <span class="post">上传时间:2020-03-08</span><br /><br />
-                        <button class="btn-info" style="width:80px;height:80px;border-radius:50px;border:0px;">播放</button>
-                    </div>
-                    <h5>英语口语练习3</h5>
-                </div>
-            </div>*@
         </div>
+
 
     </div>
 </div>

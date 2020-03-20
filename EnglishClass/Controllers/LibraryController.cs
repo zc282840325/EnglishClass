@@ -70,22 +70,71 @@ namespace EnglishClass.Controllers
             }
         }
 
-        public void Check()
+        public string Check(int vid)
         {
             int uid = Convert.ToInt32(Request.Cookies["UID"].Value);
             var list = db.tb_Result.Where(x => x.UID == uid).ToList();
-            var result="";
+            List<int> list_res = new List<int>();
             for (int i = 0; i < 3; i++)
             {
-                var ss = from a in list join b in db.tb_Library on a.LID equals b.Lid
-                         where b.State==0 select b;
-                if (ss.Count()>=3)
+                var query = (from a in list join b in db.tb_Library on a.LID equals b.Lid
+                         where b.State==i
+                         && b.VID==vid select b).ToList();
+                string sql = query.ToString();
+        
+                if (query.Count()>=3)
                 {
-                    result += "";
+                    list_res.Add(1);
+                }
+                else
+                {
+                    list_res.Add(0);
                 }
             }
-
+            var result = "{\"list\":"+JsonConvert.SerializeObject(list_res) +"}";
+            return result;
         }
+        public string CheckSelect(int VID)
+        {
+            int uid = Convert.ToInt32(Request.Cookies["UID"].Value);
+            var user = db.tb_RecordVideo.Where(x => x.UID == uid && x.VID == VID).FirstOrDefault();
+            int state = 0;
+            string msg = string.Empty;
+            if (user == null)
+            {
+                state = 1;
+                msg = "您还未答题，请答题！";
+            }
+            var result = "{\"state\":\"" + state + "\",\"msg\":\"" + msg + "\"}";
+            return result;
+        }
+        public string AddRecordVideo(int VID)
+        {
+            int uid = Convert.ToInt32(Request.Cookies["UID"].Value);
+            var user = db.tb_RecordVideo.Where(x => x.UID == uid && x.VID == VID).FirstOrDefault();
+            int state = 0;
+            string msg = string.Empty;
+            try
+            {
+                if (user == null)
+                {
+                    tb_RecordVideo video = new tb_RecordVideo();
+                    video.UID = uid;
+                    video.VID = VID;
+                    video.CreateTime = DateTime.Now;
+                    db.tb_RecordVideo.Add(video);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                state = 1;
+                msg = ex.Message;
+            }
+            var result = "{\"state\":\""+state+"\",\"msg\":\""+msg+"\"}";
+            return result;
+        }
+
         // GET: Library/Create
         public ActionResult Create()
         {
@@ -100,10 +149,19 @@ namespace EnglishClass.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Lid,VID,State,Question,Answer1,Answer2,Answer3,TAnswer")] tb_Library tb_Library)
         {
-
-
+           
             if (ModelState.IsValid)
             {
+                var llist = db.tb_Library.Where(x=>x.State== tb_Library.State).ToList();
+                if (llist.Count==3)
+                {
+                    var vid = tb_Library.VID;
+                    var video = db.tb_Video.Find(vid);
+                    video.State = 1;
+                    db.Entry(video).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
                 db.tb_Library.Add(tb_Library);
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -132,6 +132,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LibraryController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\VideoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -190,6 +191,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\add.jpg" />
     <Content Include="Images\b1.jpg" />
+    <Content Include="Images\banner.png" />
     <Content Include="Images\chat.jpg" />
     <Content Include="Images\img-1.png" />
     <Content Include="Images\img-2.png" />
@@ -259,6 +261,11 @@
     <Content Include="Views\Home\ShowList.cshtml" />
     <Content Include="Views\Video\ChatWith.cshtml" />
     <Content Include="Views\Video\ChatWithPersion.cshtml" />
+    <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\User\Delete.cshtml" />
+    <Content Include="Views\User\Details.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
